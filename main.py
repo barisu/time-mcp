@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from mcp.server.fastmcp import FastMCP
@@ -5,9 +6,21 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
 
+def _env_int(name: str, default: int) -> int:
+    return int(os.getenv(name, str(default)))
+
+
+def _env_path(name: str, default: str) -> str:
+    value = os.getenv(name, default)
+    return value if value.startswith("/") else f"/{value}"
+
+
 mcp = FastMCP(
     name="time-mcp",
     instructions="Return the current server datetime.",
+    host=os.getenv("FASTMCP_HOST", "127.0.0.1"),
+    port=_env_int("FASTMCP_PORT", 8000),
+    streamable_http_path=_env_path("FASTMCP_STREAMABLE_HTTP_PATH", "/mcp"),
 )
 
 

@@ -11,10 +11,16 @@ uv run time-mcp
 
 The server starts with Streamable HTTP on `http://127.0.0.1:8000/mcp`.
 
-You can change the bind settings with FastMCP environment variables, for example:
+You can change the bind settings with this app's environment variables:
 
 ```bash
 FASTMCP_HOST=0.0.0.0 FASTMCP_PORT=8080 uv run time-mcp
+```
+
+You can also change the MCP path:
+
+```bash
+FASTMCP_STREAMABLE_HTTP_PATH=/time uv run time-mcp
 ```
 
 `GET /` returns a small JSON document with the MCP endpoint and tool name.
@@ -61,3 +67,9 @@ sudo systemctl status time-mcp
 ```
 
 With this setup, the MCP endpoint is available at `http://<server>:8000/mcp`.
+
+`ExecStart=/opt/time-mcp/.venv/bin/time-mcp` works because `uv sync` installs the project and generates the console script from `[project.scripts]` in `pyproject.toml`. If you prefer not to rely on that entry point, you can use this instead:
+
+```ini
+ExecStart=/opt/time-mcp/.venv/bin/python /opt/time-mcp/main.py
+```
