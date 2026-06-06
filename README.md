@@ -17,10 +17,41 @@ You can change the bind settings with this app's environment variables:
 FASTMCP_HOST=0.0.0.0 FASTMCP_PORT=8080 uv run time-mcp
 ```
 
+You can also pass runtime options:
+
+```bash
+uv run time-mcp --host 0.0.0.0 --port 8080
+```
+
 You can also change the MCP path:
 
 ```bash
 FASTMCP_STREAMABLE_HTTP_PATH=/time uv run time-mcp
+```
+
+## Allowing additional origins
+
+When the server is bound to localhost, browser requests from localhost are allowed by default. To allow additional `Origin` values, pass `--allow-origin` at startup or set `FASTMCP_ALLOWED_ORIGINS`.
+
+```bash
+uv run time-mcp \
+  --allow-origin https://app.example.com \
+  --allow-origin https://admin.example.com
+```
+
+Comma-separated values are also supported:
+
+```bash
+FASTMCP_ALLOWED_ORIGINS=https://app.example.com,https://admin.example.com uv run time-mcp
+```
+
+If you bind to a wildcard host such as `0.0.0.0`, also set the allowed host list so Host header validation can stay enabled:
+
+```bash
+uv run time-mcp \
+  --host 0.0.0.0 \
+  --allow-host mcp.example.com:* \
+  --allow-origin https://app.example.com
 ```
 
 `GET /` returns a small JSON document with the MCP endpoint and tool name.
