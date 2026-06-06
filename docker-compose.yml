@@ -1,0 +1,14 @@
+services:
+  time-mcp:
+    build:
+      context: .
+    container_name: time-mcp
+    restart: unless-stopped
+    ports:
+      - "${TIME_MCP_PORT:-8000}:8000"
+    environment:
+      FASTMCP_HOST: 0.0.0.0
+      FASTMCP_PORT: 8000
+      FASTMCP_STREAMABLE_HTTP_PATH: ${FASTMCP_STREAMABLE_HTTP_PATH:-/mcp}
+      FASTMCP_ALLOWED_ORIGINS: ${FASTMCP_ALLOWED_ORIGINS:-}
+      FASTMCP_ALLOWED_HOSTS: ${FASTMCP_ALLOWED_HOSTS:-}

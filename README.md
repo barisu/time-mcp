@@ -56,6 +56,30 @@ uv run time-mcp \
 
 `GET /` returns a small JSON document with the MCP endpoint and tool name.
 
+## Run with Docker Compose
+
+```bash
+docker compose up -d --build
+```
+
+The container listens on `http://127.0.0.1:8000/mcp` by default and is configured with `restart: unless-stopped` for persistent startup.
+
+You can override the published port and origin settings with environment variables:
+
+```bash
+TIME_MCP_PORT=18000 \
+FASTMCP_ALLOWED_ORIGINS=https://app.example.com \
+docker compose up -d --build
+```
+
+If you need wildcard bind plus Host validation, set `FASTMCP_ALLOWED_HOSTS` as well:
+
+```bash
+FASTMCP_ALLOWED_HOSTS=mcp.example.com:* \
+FASTMCP_ALLOWED_ORIGINS=https://app.example.com \
+docker compose up -d --build
+```
+
 ## Run as a service
 
 If you want to register it on a server, the simplest option is a `systemd` service.
